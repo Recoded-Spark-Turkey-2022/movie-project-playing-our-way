@@ -145,7 +145,7 @@ const renderActors = (staffs) => {
           <p class = "card-text">${actor.name}</p>
         </div>`;
     actorCard.addEventListener("click", () => {
-      displaySingleActorPage();
+      displaySingleActorPage(actor);
     });
 
     actorDiv.appendChild(actorCard)
@@ -212,13 +212,29 @@ const renderProductionCompanies = (companies) => {
   })
 }
 
-const displaySingleActorPage = () => {
+
+//this function provides to get the information about the chosen actor
+const displaySingleActorPage = (actor) => {
   CONTAINER.innerHTML = `
       <div class="row">
           <div class="col-md-4">
                <h1>welcome, you are in actor page</h1>
-          </div>`;
+               <img src="${BACKDROP_BASE_URL + actor.profile_path}" alt="${actor.name} poster" height="200">
+          </div>
+          <div class="col-md-8">
+              <h2 id="actor-name">${actor.name}</h2>
+              <p id="actor-birthday"><b>Birthday:</b> ${actor.birthday}</p>
+              <p id="actor-place-of-birth"><b>Place of Birth:</b> ${actor.place_of_birth}</p>
+
+              
+              <h3>Biography:</h3>
+              <p id="actor-biography">${actor.biography}</p>
+              <p id="actor-popularity">Popularity: ${actor.popularity}</p>
+          </div>
+      </div>
+  `;
 };
+
 
 document.addEventListener("DOMContentLoaded", autorun);
 const navEl = document.createElement('nav');
