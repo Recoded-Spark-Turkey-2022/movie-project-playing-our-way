@@ -76,10 +76,13 @@ const fetchMovie = async (movieId) => {
 const renderMovies = (movies) => {
   movies.map((movie) => {
     const movieDiv = document.createElement("div");
+    movieDiv.className = "col-sm-3 d-flex align-items-stretch";
     movieDiv.innerHTML = `
+    <div class="card">
         <img src="${BACKDROP_BASE_URL + movie.backdrop_path}" alt="${
       movie.title
     } poster">
+
         <h3>${movie.title}</h3>`;
     movieDiv.addEventListener("click", () => {
       movieDetails(movie);
@@ -234,13 +237,13 @@ const displaySingleActorPage = (actor, actorJson) => {
   CONTAINER.innerHTML = `
       <div class="row">
           <div class="col-md-4">
-               <h1>welcome, you are in actor page</h1>
+               
                <img src="${BACKDROP_BASE_URL + actor.profile_path}" alt="${actor.name} poster" height="200">
           </div>
           <div class="col-md-8">
               <h2 id="actor-name">${actor.name}</h2>
-              <p id="actor-birthday"><b>Birthday:</b> ${actor.birthday}</p>
-              <p id="actor-place-of-birth"><b>Place of Birth:</b> ${actor.place_of_birth}</p>
+              <p id="actor-birthday"><b>Birthday:</b> ${actorJson.birthday}</p>
+              <p id="actor-place-of-birth"><b>Place of Birth:</b> ${actorJson.place_of_birth}</p>
 
               
               <h3>Biography:</h3>
