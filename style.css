@@ -7,20 +7,20 @@
 
 body{
     min-height: 100vh;
-    display: flex;
-    flex-direction: column;
   }
 .style{
   background-image: url("./imgs/2.jpg");
   background-color: #cccccc;
-  flex: 1;
-  flex: 50%;
 }
 .style h1{
   padding: 15%;
   color: #cccccc;
   line-height: 70x;
   border-left: #cccccc;
+}
+#col-md-8{
+ display: flex;
+ flex-direction: row;
 }
 
   nav{

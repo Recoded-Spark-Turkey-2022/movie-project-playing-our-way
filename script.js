@@ -238,7 +238,10 @@ const displaySingleActorPage = (actor) => {
 
 document.addEventListener("DOMContentLoaded", autorun);
 const navEl = document.createElement('nav');
-navEl.innerHTML = `<div class="style"> <div class="navbar">
+navEl.innerHTML = `<div class="style"> <video autoplay muted loop id="myVideo">
+<source src="/." type="video/mp4">
+</video>
+<div class="navbar">
 <i class='bx bx-menu'></i>
 <div class="logo"><img src="./imgs/logo.png" width="150px" height="150px"></a></div>
 <div class="nav-links">
