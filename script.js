@@ -46,6 +46,22 @@ const fetchMovies = async () => {
   return res.json();
 };
 
+
+const fetchGenres = async () => {
+  const url = constructUrl(`genre/movie/list`);
+  const res = await fetch(url);
+  const genresJson = await res.json();
+  const genreArr = genresJson.genres
+  console.log(genreArr)
+  genreArr.forEach((genre)=>{
+    const genreEl = document.createElement('li')
+    genreEl.innerHTML = `<a href="#">${genre.name}</a>`
+    document.getElementById('dropgeneres').appendChild(genreEl)
+  })
+};
+fetchGenres();
+
+
 //this function provides actors and director information from API
 const fetchStaff = async (id) => {
   const url = constructUrl(`movie/${id}/credits`);
@@ -267,14 +283,12 @@ navEl.innerHTML = `<div class="navbar">
     <i class='bx bx-x' ></i>
   </div>
   <ul class="links">
-    <li><a href="#">HOME</a></li>
+    <li><a href="#" id='home-btn'>HOME</a></li>
     <li>
-      <a href="#">GENRES</a>
+      <a href="#" id='genres'>GENRES</a>
       <i class='bx bxs-chevron-down htmlcss-arrow arrow  '></i>
-      <ul class="htmlCss-sub-menu sub-menu">
-        <li><a href="#">Action</a></li>
-        <li><a href="#">Romantic</a></li>
-        <li><a href="#">Drama</a></li>
+      <ul class="htmlCss-sub-menu sub-menu" id='dropgeneres'>
+        
       </ul>
     </li>
     <li>
@@ -335,3 +349,9 @@ document.querySelector('body').prepend(navEl);
  jsArrow.onclick = function() {
   navLinks.classList.toggle("show3");
  }
+ // home button functionality
+ const homeBtn = document.getElementById('home-btn');
+ homeBtn.addEventListener('click',e=>{
+  window.location.reload()
+  e.preventDefault()
+ })
