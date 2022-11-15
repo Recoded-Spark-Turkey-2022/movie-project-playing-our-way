@@ -238,9 +238,9 @@ const displaySingleActorPage = (actor) => {
 
 document.addEventListener("DOMContentLoaded", autorun);
 const navEl = document.createElement('nav');
-navEl.innerHTML = `<div class="navbar">
+navEl.innerHTML = `<div class="style"> <div class="navbar">
 <i class='bx bx-menu'></i>
-<div class="logo"><a href="#">MOVIES</a></div>
+<div class="logo"><img src="./imgs/logo.png" width="150px" height="150px"></a></div>
 <div class="nav-links">
   <div class="sidebar-logo">
     <span class="logo-name">CodingLab</span>
@@ -277,6 +277,8 @@ navEl.innerHTML = `<div class="navbar">
     <input type="text" placeholder="Search...">
   </div>
 </div>
+</div>
+<h1>Every movie is a different world, come and discover these worlds with us.</h1>
 </div>`
 document.querySelector('body').prepend(navEl);
  // search-box open close js code
