@@ -12,8 +12,9 @@ const CONTAINER = document.querySelector(".container");
 //https://api.themoviedb.org/3/ movie/436270 /credits?api_key=542003918769df50083a13c415bbc602&language=en-US
 
 //get similar films
-// TMD_BASE_URL  / movie/{movieid} / similar?api-key=xxx & language=en-US
-//https://api.themoviedb.org/3/movie/436270/similar?api_key=542003918769df50083a13c415bbc602&language=en-US&page=1
+//person/${personId}
+// TMD_BASE_URL /person/1083010 / similar?api-key=xxx & language=en-US
+//https://api.themoviedb.org/3/person/1083010?api_key=542003918769df50083a13c415bbc602&language=en-US&page=1
 
 // Don't touch this function please
 const autorun = async () => {
@@ -60,6 +61,9 @@ const fetchRelatedFilms = async (id) => {
   //console.log(res.json())
   return res.json();
 };
+
+
+
 
 // Don't touch this function please. This function is to fetch one movie.
 const fetchMovie = async (movieId) => {
@@ -145,8 +149,20 @@ const renderActors = (staffs) => {
           <p class = "card-text">${actor.name}</p>
         </div>`;
     actorCard.addEventListener("click", () => {
-      displaySingleActorPage(actor);
+      const fetchPerson = async (personId) => {
+        const url = constructUrl(`person/${personId}`);
+        const res = await fetch(url);
+        const actorJson = await res.json();
+        displaySingleActorPage(actor, actorJson)
+      }
+      fetchPerson(actor.id)
+     
+      
+      
     });
+
+  
+    
 
     actorDiv.appendChild(actorCard)
     actorList.appendChild(actorDiv);
@@ -214,7 +230,7 @@ const renderProductionCompanies = (companies) => {
 
 
 //this function provides to get the information about the chosen actor
-const displaySingleActorPage = (actor) => {
+const displaySingleActorPage = (actor, actorJson) => {
   CONTAINER.innerHTML = `
       <div class="row">
           <div class="col-md-4">
@@ -228,7 +244,8 @@ const displaySingleActorPage = (actor) => {
 
               
               <h3>Biography:</h3>
-              <p id="actor-biography">${actor.biography}</p>
+              <p id="actor-biography">${actorJson.biography}</p>
+              <p id="actor-biography">${actorJson.place_of_birth}</p>
               <p id="actor-popularity">Popularity: ${actor.popularity}</p>
           </div>
       </div>
