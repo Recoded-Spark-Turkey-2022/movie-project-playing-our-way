@@ -5,16 +5,13 @@ const PROFILE_BASE_URL = "http://image.tmdb.org/t/p/w185";
 const BACKDROP_BASE_URL = "http://image.tmdb.org/t/p/w780";
 const CONTAINER = document.querySelector(".container");
 
-//get film details
 
 //get actors
 // TMD_BASE_URL / movie/{movieid} / credits?api-key=xxx & language=en-US
 //https://api.themoviedb.org/3/ movie/436270 /credits?api_key=542003918769df50083a13c415bbc602&language=en-US
 
-//get similar films
-//person/${personId}
 // TMD_BASE_URL /person/1083010 / similar?api-key=xxx & language=en-US
-//https://api.themoviedb.org/3/person/1083010?api_key=542003918769df50083a13c415bbc602&language=en-US&page=1
+//https://api.themoviedb.org/3/now-playing?api_key=542003918769df50083a13c415bbc602&language=en-US&page=1
 
 // Don't touch this function please
 const autorun = async () => {
@@ -36,7 +33,8 @@ const movieDetails = async (movie) => {
   const movieRes = await fetchMovie(movie.id);
   const staffRes = await fetchStaff(movie.id);
   const relatedFilms = await fetchRelatedFilms(movie.id);
-  renderMovie(movieRes, staffRes, relatedFilms);
+  const movieTrailers = await fetchTrailers(movie.id)
+  renderMovie(movieRes, staffRes, relatedFilms, movieTrailers);
 };
 
 // This function is to fetch movies. You may need to add it or change some part in it in order to apply some of the features.
@@ -45,6 +43,32 @@ const fetchMovies = async () => {
   const res = await fetch(url);
   return res.json();
 };
+
+// this function to fetch genres and show them in the navbar 
+const fetchGenres = async () => {
+  const url = constructUrl(`genre/movie/list`);
+  const res = await fetch(url);
+  const genresJson = await res.json();
+  console.log(genresJson.genres)
+  genresJson.genres.forEach((genre)=>{
+    const genreEl = document.createElement('li')
+    genreEl.innerHTML = `<a id='genrebtn' href='#'>${genre.name}</a>`
+    document.getElementById('dropgeneres').appendChild(genreEl)
+    genreEl.addEventListener("click", () => {
+      
+      fetch(`${TMDB_BASE_URL}/discover/movie?api_key=${atob(
+        "NTQyMDAzOTE4NzY5ZGY1MDA4M2ExM2M0MTViYmM2MDI="
+      )}&with_genres=${genre.id}`)
+      
+      .then(resp => resp.json())
+      .then(data => renderMovies(data.results))
+    })
+  
+  })
+  
+};
+fetchGenres();
+
 
 //this function provides actors and director information from API
 const fetchStaff = async (id) => {
@@ -69,6 +93,7 @@ const fetchTrailers = async(id) => {
   return res.json();
 };
 
+
 //this is for fetching the movie credit for single actor
 const fetchActorsMovie = async (id) => {
   const url = constructUrl(`person/${id}/movie_credits`);
@@ -88,6 +113,7 @@ const fetchMovie = async (movieId) => {
 
 // You'll need to play with this function in order to add features and enhance the style.
 const renderMovies = (movies) => {
+  CONTAINER.innerHTML=''
   movies.map((movie) => {
     const movieDiv = document.createElement("div");
     movieDiv.className = "col-sm-3 d-flex align-items-stretch";
@@ -106,49 +132,54 @@ const renderMovies = (movies) => {
 };
 
 // You'll need to play with this function in order to add features and enhance the style.
-const renderMovie = (movie, staffs, relatedFilms) => {
+const renderMovie = (movie, staffs, relatedFilms, trailers) => {
   CONTAINER.innerHTML = `
     <div class="row">
         <div class="col-md-4">
-             <img id="movie-backdrop" src=${
-               BACKDROP_BASE_URL + movie.backdrop_path
-             }>
+          <img id="movie-backdrop" src=${BACKDROP_BASE_URL + movie.backdrop_path}>
         </div>
+
         <div class="col-md-8">
-            <h2 id="movie-title">${movie.title}</h2>
-            <p id= "movie-genres">Genres: </p>
-            <p id="movie-release-date"><b>Release Date:</b> ${movie.release_date}</p>
-            <p id="movie-runtime"><b>Runtime:</b> ${movie.runtime} Minutes</p>
-            <h3>Overview:</h3>
-            <p id="movie-overview">${movie.overview}</p>
-            <p id="movie-director"> </p>
-            <p id="movie-vote-average">Rating: ${movie.vote_average}</p>
-            <p id="movie-vote-count">Vote count: ${movie.vote_count}</p>
-            <p id="movie-language">Language: ${movie.original_language.toUpperCase()}</p>
+          <h2 id="movie-title">${movie.title}</h2>
+          <p id= "movie-genres">Genres: </p>
+          <p id="movie-release-date"><b>Release Date:</b> ${movie.release_date}</p>
+          <p id="movie-runtime"><b>Runtime:</b> ${movie.runtime} Minutes</p>
+          <h3>Overview:</h3>
+          <p id="movie-overview">${movie.overview}</p>
+          <p id="movie-director"> </p>
+          <p id="movie-vote-average">Rating: ${movie.vote_average}</p>
+          <p id="movie-vote-count">Vote count: ${movie.vote_count}</p>
+          <p id="movie-language">Language: ${movie.original_language.toUpperCase()}</p>
         </div>
-        </div>
+    
         <div>
-             <h3>Production Companies:</h3>
-             <div id= "production-companies" class= "row">
-             
-             </div>
+          <h3>Production Companies:</h3>
+          <div id= "production-companies" class= "row"></div>
         </div>
+
         </div >
-            <h3>Actors:</h3>
-            <div id="actors" class="row" >
-        
-            </div>
+          <h3>Actors:</h3>
+          <div id="actors" class="row" ></div>
         </div>
+
+        </div >
+          <h3>Trailer:</h3>
+          <div id="trailer" ></div>
+        </div>
+
         <div >
-        <h3>Similar Films:</h3>
-            <div id="similarFilms" class="row">
-            
-            </div>`;
+          <h3>Similar Films:</h3>
+          <div id="similarFilms" class="row"></div>
+        </div>
+
+    </div>`;
+
   renderActors(staffs);
   renderSimilarFilms(relatedFilms);
   findDirector(staffs.crew);
   findGenres(movie.genres);
   renderProductionCompanies(movie.production_companies);
+  renderTrailer(trailers);
 };
 
 //this function provides to get main 5 actor informations about each film
@@ -252,6 +283,7 @@ const renderTrailer = (trailers) => {
   trailerDiv.appendChild(trailerArea);
 };
 
+
 //this function provides to get movies of chosen actor
 const renderActorsMovie = (actorsMovie) => {
   const actorsMovieList = document.querySelector("#actorsMovie");
@@ -305,7 +337,7 @@ const displaySingleActorPage = (actor, actorJson, actorsMovie) => {
 };
 
 
-document.addEventListener("DOMContentLoaded", autorun);
+
 const navEl = document.createElement("nav");
 navEl.innerHTML = `<div class="navbar">
 <i class='bx bx-menu'></i>
@@ -316,14 +348,12 @@ navEl.innerHTML = `<div class="navbar">
     <i class='bx bx-x' ></i>
   </div>
   <ul class="links">
-    <li><a href="#">HOME</a></li>
+    <li><a href="#" id='home-btn'>HOME</a></li>
     <li>
-      <a href="#">GENRES</a>
+      <a href="#" id='genres'>GENRES</a>
       <i class='bx bxs-chevron-down htmlcss-arrow arrow  '></i>
-      <ul class="htmlCss-sub-menu sub-menu">
-        <li><a href="#">Action</a></li>
-        <li><a href="#">Romantic</a></li>
-        <li><a href="#">Drama</a></li>
+      <ul class="htmlCss-sub-menu sub-menu" id='dropgeneres'>
+        
       </ul>
     </li>
     <li>
@@ -336,7 +366,7 @@ navEl.innerHTML = `<div class="navbar">
         <li><a href="#">Example</a></li>
       </ul>
     </li>
-    <li><a href="#">ACTORS</a></li>
+    <li><a href="#" id ="all-actors">ACTORS</a></li>
     <li><a href="#">ABOUT US</a></li>
   </ul>
 </div>
@@ -381,4 +411,57 @@ htmlcssArrow.onclick = function () {
 let jsArrow = document.querySelector(".js-arrow");
 jsArrow.onclick = function () {
   navLinks.classList.toggle("show3");
+ };
+ 
+ // home button functionality
+ const homeBtn = document.getElementById('home-btn');
+ homeBtn.addEventListener('click',e=>{
+  window.location.reload()
+  e.preventDefault()
+ });
+
+//create all actors page when clicked the actor button in the navbar
+const allActorsBtn = document.getElementById("all-actors")
+allActorsBtn.addEventListener('click', () => {
+  CONTAINER.innerHTML = `<div class="row" id="all-actors-page"></div>`
+  allActors();
+})
+
+const allActors = async () => {
+  const allActorsPage = document.getElementById('all-actors-page')
+  const allMovies = await fetchMovies();
+  allMovies.results.map(async (singleMovie) => {
+    const allStaffs = await fetchStaff(singleMovie.id);
+    const mainActor = allStaffs.cast[0]
+    //mainActor provides first actor of each movie
+    const actorDiv = document.createElement("div");
+    actorDiv.className = "col";
+    const actorCard = document.createElement("div");
+    actorCard.className = "card";
+
+    actorCard.innerHTML = `
+    <img src="${BACKDROP_BASE_URL + mainActor.profile_path}" alt="${mainActor.name} poster" height="200">
+    <div class = "card-body">
+          <p class = "card-text">${mainActor.name}</p>
+        </div>`;
+
+    actorDiv.appendChild(actorCard);
+    allActorsPage.appendChild(actorDiv);
+
+    //added eventListener like the actors on the single movie page
+    actorCard.addEventListener("click", () => {
+      const fetchPerson = async (personId) => {
+        const url = constructUrl(`person/${personId}`);
+        const res = await fetch(url);
+        const actorJson = await res.json();
+        displaySingleActorPage(mainActor, actorJson);
+      };
+      fetchPerson(mainActor.id);
+    });
+
+  })
 };
+
+
+
+ document.addEventListener("DOMContentLoaded", autorun);
