@@ -49,13 +49,23 @@ const fetchGenres = async () => {
   const url = constructUrl(`genre/movie/list`);
   const res = await fetch(url);
   const genresJson = await res.json();
-  const genreArr = genresJson.genres
-  console.log(genreArr)
-  genreArr.forEach((genre)=>{
+  console.log(genresJson.genres)
+  genresJson.genres.forEach((genre)=>{
     const genreEl = document.createElement('li')
-    genreEl.innerHTML = `<a href="#">${genre.name}</a>`
+    genreEl.innerHTML = `<a id='genrebtn' href='#'>${genre.name}</a>`
     document.getElementById('dropgeneres').appendChild(genreEl)
+    genreEl.addEventListener("click", () => {
+      
+      fetch(`${TMDB_BASE_URL}/discover/movie?api_key=${atob(
+        "NTQyMDAzOTE4NzY5ZGY1MDA4M2ExM2M0MTViYmM2MDI="
+      )}&with_genres=${genre.id}`)
+      
+      .then(resp => resp.json())
+      .then(data => renderMovies(data.results))
+    })
+  
   })
+  
 };
 fetchGenres();
 
@@ -93,6 +103,7 @@ const fetchMovie = async (movieId) => {
 
 // You'll need to play with this function in order to add features and enhance the style.
 const renderMovies = (movies) => {
+  CONTAINER.innerHTML=''
   movies.map((movie) => {
     const movieDiv = document.createElement("div");
     movieDiv.className = "col-sm-3 d-flex align-items-stretch";
