@@ -241,11 +241,6 @@ const displaySingleActorPage = (actor, actorJson) => {
                <img src="${BACKDROP_BASE_URL + actor.profile_path}" alt="${actor.name} poster" height="200">
           </div>
           <div class="col-md-8">
-<<<<<<< Updated upstream
-              <h2 id="actor-name">${actor.name}</h2>
-              <p id="actor-birthday"><b>Birthday:</b> ${actorJson.birthday}</p>
-              <p id="actor-place-of-birth"><b>Place of Birth:</b> ${actorJson.place_of_birth}</p>
-=======
 
               <h2 id="actor-name">${actorJson.name}</h2>
               <p id="actor-birthday"><b>Birthday:</b> ${actorJson.birthday ? actorJson.birthday : "no info"}</p>
@@ -254,7 +249,6 @@ const displaySingleActorPage = (actor, actorJson) => {
               <p><strong><bdi>Gender</bdi></strong><br> ${actorJson.gender == 2 ? "Male" : "Female"}</p>
               <p id="actor-known-for"><b>Known for:</b> ${actorJson.known_for_department ? actorJson.known_for_department : "no info"}</p>
               <p id="actor-popularity"><b>Popularity:</b> ${actorJson.popularity ? actorJson.popularity : "no info"}</p>
->>>>>>> Stashed changes
 
               
               <h3>Biography:</h3>
