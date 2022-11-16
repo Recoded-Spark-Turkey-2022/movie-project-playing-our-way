@@ -5,16 +5,13 @@ const PROFILE_BASE_URL = "http://image.tmdb.org/t/p/w185";
 const BACKDROP_BASE_URL = "http://image.tmdb.org/t/p/w780";
 const CONTAINER = document.querySelector(".container");
 
-//get film details
 
 //get actors
 // TMD_BASE_URL / movie/{movieid} / credits?api-key=xxx & language=en-US
 //https://api.themoviedb.org/3/ movie/436270 /credits?api_key=542003918769df50083a13c415bbc602&language=en-US
 
-//get similar films
-//person/${personId}
 // TMD_BASE_URL /person/1083010 / similar?api-key=xxx & language=en-US
-//https://api.themoviedb.org/3/person/1083010?api_key=542003918769df50083a13c415bbc602&language=en-US&page=1
+//https://api.themoviedb.org/3/now-playing?api_key=542003918769df50083a13c415bbc602&language=en-US&page=1
 
 // Don't touch this function please
 const autorun = async () => {
@@ -36,7 +33,8 @@ const movieDetails = async (movie) => {
   const movieRes = await fetchMovie(movie.id);
   const staffRes = await fetchStaff(movie.id);
   const relatedFilms = await fetchRelatedFilms(movie.id);
-  renderMovie(movieRes, staffRes, relatedFilms);
+  const movieTrailers = await fetchTrailers(movie.id)
+  renderMovie(movieRes, staffRes, relatedFilms, movieTrailers);
 };
 
 // This function is to fetch movies. You may need to add it or change some part in it in order to apply some of the features.
@@ -78,6 +76,14 @@ const fetchRelatedFilms = async (id) => {
   return res.json();
 };
 
+const fetchTrailers = async(id) => {
+  const url = constructUrl(`movie/${id}/videos`)
+  const res = await fetch(url);
+ // console(res.json());
+  return res.json();
+}
+
+
 // Don't touch this function please. This function is to fetch one movie.
 const fetchMovie = async (movieId) => {
   const url = constructUrl(`movie/${movieId}`);
@@ -105,49 +111,54 @@ const renderMovies = (movies) => {
 };
 
 // You'll need to play with this function in order to add features and enhance the style.
-const renderMovie = (movie, staffs, relatedFilms) => {
+const renderMovie = (movie, staffs, relatedFilms, trailers) => {
   CONTAINER.innerHTML = `
     <div class="row">
         <div class="col-md-4">
-             <img id="movie-backdrop" src=${
-               BACKDROP_BASE_URL + movie.backdrop_path
-             }>
+          <img id="movie-backdrop" src=${BACKDROP_BASE_URL + movie.backdrop_path}>
         </div>
+
         <div class="col-md-8">
-            <h2 id="movie-title">${movie.title}</h2>
-            <p id= "movie-genres">Genres: </p>
-            <p id="movie-release-date"><b>Release Date:</b> ${movie.release_date}</p>
-            <p id="movie-runtime"><b>Runtime:</b> ${movie.runtime} Minutes</p>
-            <h3>Overview:</h3>
-            <p id="movie-overview">${movie.overview}</p>
-            <p id="movie-director"> </p>
-            <p id="movie-vote-average">Rating: ${movie.vote_average}</p>
-            <p id="movie-vote-count">Vote count: ${movie.vote_count}</p>
-            <p id="movie-language">Language: ${movie.original_language.toUpperCase()}</p>
+          <h2 id="movie-title">${movie.title}</h2>
+          <p id= "movie-genres">Genres: </p>
+          <p id="movie-release-date"><b>Release Date:</b> ${movie.release_date}</p>
+          <p id="movie-runtime"><b>Runtime:</b> ${movie.runtime} Minutes</p>
+          <h3>Overview:</h3>
+          <p id="movie-overview">${movie.overview}</p>
+          <p id="movie-director"> </p>
+          <p id="movie-vote-average">Rating: ${movie.vote_average}</p>
+          <p id="movie-vote-count">Vote count: ${movie.vote_count}</p>
+          <p id="movie-language">Language: ${movie.original_language.toUpperCase()}</p>
         </div>
-        </div>
+    
         <div>
-             <h3>Production Companies:</h3>
-             <div id= "production-companies" class= "row">
-             
-             </div>
+          <h3>Production Companies:</h3>
+          <div id= "production-companies" class= "row"></div>
         </div>
+
         </div >
-            <h3>Actors:</h3>
-            <div id="actors" class="row" >
-        
-            </div>
+          <h3>Actors:</h3>
+          <div id="actors" class="row" ></div>
         </div>
+
+        </div >
+          <h3>Trailer:</h3>
+          <div id="trailer" ></div>
+        </div>
+
         <div >
-        <h3>Similar Films:</h3>
-            <div id="similarFilms" class="row">
-            
-            </div>`;
+          <h3>Similar Films:</h3>
+          <div id="similarFilms" class="row"></div>
+        </div>
+
+    </div>`;
+
   renderActors(staffs);
   renderSimilarFilms(relatedFilms);
   findDirector(staffs.crew);
   findGenres(movie.genres);
   renderProductionCompanies(movie.production_companies);
+  renderTrailer(trailers)
 };
 
 //this function provides to get main 5 actor informations about each film
@@ -238,6 +249,14 @@ const renderProductionCompanies = (companies) => {
   });
 };
 
+const renderTrailer = (trailers) => {
+  const trailerKey = trailers.results[0].key
+  const trailerDiv = document.getElementById("trailer")
+  const trailerArea = document.createElement('div')
+  trailerArea.innerHTML = `<iframe src="https://www.youtube.com/embed/${trailerKey}" allowfullscreen width="560" height="315" ></iframe>`
+  trailerDiv.appendChild(trailerArea)
+}
+
 //this function provides to get the information about the chosen actor
 const displaySingleActorPage = (actor, actorJson) => {
   CONTAINER.innerHTML = `
@@ -268,7 +287,7 @@ const displaySingleActorPage = (actor, actorJson) => {
 };
 
 
-document.addEventListener("DOMContentLoaded", autorun);
+
 const navEl = document.createElement("nav");
 navEl.innerHTML = `<div class="navbar">
 <i class='bx bx-menu'></i>
@@ -351,4 +370,5 @@ jsArrow.onclick = function () {
   e.preventDefault()
  })
 
-};
+
+ document.addEventListener("DOMContentLoaded", autorun);
