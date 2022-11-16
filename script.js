@@ -316,7 +316,7 @@ navEl.innerHTML = `<div class="navbar">
         <li><a href="#">Example</a></li>
       </ul>
     </li>
-    <li><a href="#">ACTORS</a></li>
+    <li><a href="#" id ="all-actors">ACTORS</a></li>
     <li><a href="#">ABOUT US</a></li>
   </ul>
 </div>
@@ -370,6 +370,47 @@ jsArrow.onclick = function () {
   e.preventDefault()
  })
 
+//create all actors page when clicked the actor button in the navbar
+const allActorsBtn = document.getElementById("all-actors")
+allActorsBtn.addEventListener('click', () => {
+  CONTAINER.innerHTML = `<div class="row" id="all-actors-page"></div>`
+  allActors();
+})
+
+const allActors = async () => {
+  const allActorsPage = document.getElementById('all-actors-page')
+  const allMovies = await fetchMovies();
+  allMovies.results.map(async (singleMovie) => {
+    const allStaffs = await fetchStaff(singleMovie.id);
+    const mainActor = allStaffs.cast[0]
+    //mainActor provides first actor of each movie
+    const actorDiv = document.createElement("div");
+    actorDiv.className = "col";
+    const actorCard = document.createElement("div");
+    actorCard.className = "card";
+
+    actorCard.innerHTML = `
+    <img src="${BACKDROP_BASE_URL + mainActor.profile_path}" alt="${mainActor.name} poster" height="200">
+    <div class = "card-body">
+          <p class = "card-text">${mainActor.name}</p>
+        </div>`;
+
+    actorDiv.appendChild(actorCard);
+    allActorsPage.appendChild(actorDiv);
+
+    //added eventListener like the actors on the single movie page
+    actorCard.addEventListener("click", () => {
+      const fetchPerson = async (personId) => {
+        const url = constructUrl(`person/${personId}`);
+        const res = await fetch(url);
+        const actorJson = await res.json();
+        displaySingleActorPage(mainActor, actorJson);
+      };
+      fetchPerson(mainActor.id);
+    });
+
+  })
+};
 
 
 
