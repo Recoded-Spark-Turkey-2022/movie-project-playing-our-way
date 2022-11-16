@@ -62,9 +62,6 @@ const fetchRelatedFilms = async (id) => {
   return res.json();
 };
 
-
-
-
 // Don't touch this function please. This function is to fetch one movie.
 const fetchMovie = async (movieId) => {
   const url = constructUrl(`movie/${movieId}`);
@@ -132,9 +129,9 @@ const renderMovie = (movie, staffs, relatedFilms) => {
             </div>`;
   renderActors(staffs);
   renderSimilarFilms(relatedFilms);
-  findDirector(staffs.crew)
-  findGenres(movie.genres)
-  renderProductionCompanies(movie.production_companies)
+  findDirector(staffs.crew);
+  findGenres(movie.genres);
+  renderProductionCompanies(movie.production_companies);
 };
 
 //this function provides to get main 5 actor informations about each film
@@ -145,7 +142,7 @@ const renderActors = (staffs) => {
     actorDiv.className = "col";
     const actorCard = document.createElement("div");
     actorCard.className = "card";
-    
+
     actorCard.innerHTML = `
     <img src="${BACKDROP_BASE_URL + actor.profile_path}" alt="${actor.name} poster" height="200">
     <div class = "card-body">
@@ -156,18 +153,13 @@ const renderActors = (staffs) => {
         const url = constructUrl(`person/${personId}`);
         const res = await fetch(url);
         const actorJson = await res.json();
-        displaySingleActorPage(actor, actorJson)
-      }
-      fetchPerson(actor.id)
-     
-      
-      
+        displaySingleActorPage(actor, actorJson);
+      };
+
+      fetchPerson(actor.id);
     });
 
-  
-    
-
-    actorDiv.appendChild(actorCard)
+    actorDiv.appendChild(actorCard);
     actorList.appendChild(actorDiv);
   });
 };
@@ -181,7 +173,6 @@ const renderSimilarFilms = (similarFilms) => {
     const similarFilmCard = document.createElement("div");
     similarFilmCard.className = "card";
     
-
     similarFilmCard.innerHTML = `
         <img src="${BACKDROP_BASE_URL + film.poster_path}" alt="${film.title} poster" height="200">
         <div class = "card-body">
@@ -193,44 +184,43 @@ const renderSimilarFilms = (similarFilms) => {
   });
 };
 
-const findDirector = (staffs) => {  
+const findDirector = (staffs) => {
   staffs.map((staff) => {
-    if(staff.job === 'Director'){
-      const directorInfo = document.getElementById('movie-director')
-      directorInfo.innerText = `Director : ${staff.name}`
+    if (staff.job === "Director") {
+      const directorInfo = document.getElementById("movie-director");
+      directorInfo.innerText = `Director : ${staff.name}`;
     }
-  })
-}
+  });
+};
 
 const findGenres = (genres) => {
   genres.map((genre) => {
-    const movieGenreInfo = document.getElementById('movie-genres')
-    movieGenreInfo.append(` ${genre.name}, `)
-  })
-}
+    const movieGenreInfo = document.getElementById("movie-genres");
+    movieGenreInfo.append(` ${genre.name}, `);
+  });
+};
 
 const renderProductionCompanies = (companies) => {
   companies.map((company) => {
-    const companyInfo = document.getElementById('production-companies')
-
-
+    const companyInfo = document.getElementById("production-companies");
 
     const companyDiv = document.createElement("div");
     companyDiv.className = "col";
     const companyCard = document.createElement("div");
     companyCard.className = "card";
-    
+
     companyCard.innerHTML = `
-    <img src="${BACKDROP_BASE_URL + company.logo_path}" alt="${company.name} poster" width="100" height = "100%">
+    <img src="${BACKDROP_BASE_URL + company.logo_path}" alt="${
+      company.name
+    } poster" width="100" height = "100%">
     <div class = "card-body">
           <p class = "card-text">${company.name}</p>
         </div>`;
 
     companyDiv.appendChild(companyCard);
-    companyInfo.appendChild(companyDiv)
-  })
-}
-
+    companyInfo.appendChild(companyDiv);
+  });
+};
 
 //this function provides to get the information about the chosen actor
 const displaySingleActorPage = (actor, actorJson) => {
@@ -239,25 +229,31 @@ const displaySingleActorPage = (actor, actorJson) => {
           <div class="col-md-4">
                
                <img src="${BACKDROP_BASE_URL + actor.profile_path}" alt="${actor.name} poster" height="200">
-          </div>
-          <div class="col-md-8">
-              <h2 id="actor-name">${actor.name}</h2>
-              <p id="actor-birthday"><b>Birthday:</b> ${actorJson.birthday}</p>
-              <p id="actor-place-of-birth"><b>Place of Birth:</b> ${actorJson.place_of_birth}</p>
 
-              
-              <h3>Biography:</h3>
-              <p id="actor-biography">${actorJson.biography}</p>
-              <p id="actor-biography">${actorJson.place_of_birth}</p>
-              <p id="actor-popularity">Popularity: ${actor.popularity}</p>
           </div>
-      </div>
-  `;
+
+          <div class="col-md-8">
+
+              <h2 id="actor-name">${actorJson.name}</h2>
+              <p id="actor-birthday"><b>Birthday:</b> ${actorJson.birthday ? actorJson.birthday : "no info"}</p>
+              <p id="actor-place-of-birth"><b>Place of Birth:</b> ${actorJson.place_of_birth ? actorJson.place_of_birth : "no info"}</p>
+              <p id="actor-deathday"><b>Date of Death:</b> ${actorJson.deathday ? actorJson.deathday : "alive"}</p>
+              <p><strong><bdi>Gender</bdi></strong><br> ${actorJson.gender == 2 ? "Male" : "Female"}</p>
+              <p id="actor-known-for"><b>Known for:</b> ${actorJson.known_for_department ? actorJson.known_for_department : "no info"}</p>
+              <p id="actor-popularity"><b>Popularity:</b> ${actorJson.popularity ? actorJson.popularity : "no info"}</p>
+
+              <h3>Biography:</h3>
+              <p id="actor-biography">${actorJson.biography ? actorJson.biography : "no info"}</p>
+
+              <div id="actor-filmography" class="row">
+
+          </div>
+      </div>`;
 };
 
 
 document.addEventListener("DOMContentLoaded", autorun);
-const navEl = document.createElement('nav');
+const navEl = document.createElement("nav");
 navEl.innerHTML = `<div class="navbar">
 <i class='bx bx-menu'></i>
 <div class="logo"><a href="#">MOVIES</a></div>
@@ -297,41 +293,39 @@ navEl.innerHTML = `<div class="navbar">
     <input type="text" placeholder="Search...">
   </div>
 </div>
-</div>`
-document.querySelector('body').prepend(navEl);
- // search-box open close js code
- let navbar = document.querySelector(".navbar");
- let searchBox = document.querySelector(".search-box .bx-search");
+</div>`;
+document.querySelector("body").prepend(navEl);
+// search-box open close js code
+let navbar = document.querySelector(".navbar");
+let searchBox = document.querySelector(".search-box .bx-search");
 
- 
- searchBox.addEventListener("click", ()=>{
-   navbar.classList.toggle("showInput");
-   if(navbar.classList.contains("showInput")){
-     searchBox.classList.replace("bx-search" ,"bx-x");
-   }else {
-     searchBox.classList.replace("bx-x" ,"bx-search");
-   }
- });
- 
- // sidebar open close js code
- let navLinks = document.querySelector(".nav-links");
- let menuOpenBtn = document.querySelector(".navbar .bx-menu");
- let menuCloseBtn = document.querySelector(".nav-links .bx-x");
- menuOpenBtn.onclick = function() {
- navLinks.style.left = "0";
- }
- menuCloseBtn.onclick = function() {
- navLinks.style.left = "-100%";
- }
- 
- 
+searchBox.addEventListener("click", () => {
+  navbar.classList.toggle("showInput");
+  if (navbar.classList.contains("showInput")) {
+    searchBox.classList.replace("bx-search", "bx-x");
+  } else {
+    searchBox.classList.replace("bx-x", "bx-search");
+  }
+});
+
+// sidebar open close js code
+let navLinks = document.querySelector(".nav-links");
+let menuOpenBtn = document.querySelector(".navbar .bx-menu");
+let menuCloseBtn = document.querySelector(".nav-links .bx-x");
+menuOpenBtn.onclick = function () {
+  navLinks.style.left = "0";
+};
+menuCloseBtn.onclick = function () {
+  navLinks.style.left = "-100%";
+};
+
 //  sidebar submenu open close js code
- let htmlcssArrow = document.querySelector(".htmlcss-arrow");
- htmlcssArrow.onclick = function() {
+let htmlcssArrow = document.querySelector(".htmlcss-arrow");
+htmlcssArrow.onclick = function () {
   navLinks.classList.toggle("show1");
- }
+};
 
- let jsArrow = document.querySelector(".js-arrow");
- jsArrow.onclick = function() {
+let jsArrow = document.querySelector(".js-arrow");
+jsArrow.onclick = function () {
   navLinks.classList.toggle("show3");
- }
+};
