@@ -299,6 +299,32 @@ div.card:hover {
   transform: scale(1.1);
 }
 
+/* Trailer */
+div.trailer {
+  width: 100%;
+  height: 35rem;
+}
+
+div#trailer {
+  width: 100%;
+  height: 30rem;
+  margin-bottom: 5rem;
+}
+
+iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+  border-radius: 3rem;
+}
+
+iframe:hover {
+  cursor: pointer;
+  transform: scale(1.1);
+}
+/* Trailer */
+
+
 /* Footer */
 #footer {
   background: #3E8DA8 !important;

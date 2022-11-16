@@ -44,7 +44,7 @@ const fetchMovies = async () => {
   return res.json();
 };
 
-// this function to fetch geners and show them in the navbar 
+// this function to fetch genres and show them in the navbar 
 const fetchGenres = async () => {
   const url = constructUrl(`genre/movie/list`);
   const res = await fetch(url);
@@ -77,11 +77,11 @@ const fetchRelatedFilms = async (id) => {
 };
 
 const fetchTrailers = async(id) => {
-  const url = constructUrl(`movie/${id}/videos`)
+  const url = constructUrl(`movie/${id}/videos`);
   const res = await fetch(url);
  // console(res.json());
   return res.json();
-}
+};
 
 
 // Don't touch this function please. This function is to fetch one movie.
@@ -158,7 +158,7 @@ const renderMovie = (movie, staffs, relatedFilms, trailers) => {
   findDirector(staffs.crew);
   findGenres(movie.genres);
   renderProductionCompanies(movie.production_companies);
-  renderTrailer(trailers)
+  renderTrailer(trailers);
 };
 
 //this function provides to get main 5 actor informations about each film
@@ -250,12 +250,13 @@ const renderProductionCompanies = (companies) => {
 };
 
 const renderTrailer = (trailers) => {
-  const trailerKey = trailers.results[0].key
-  const trailerDiv = document.getElementById("trailer")
-  const trailerArea = document.createElement('div')
-  trailerArea.innerHTML = `<iframe src="https://www.youtube.com/embed/${trailerKey}" allowfullscreen width="560" height="315" ></iframe>`
-  trailerDiv.appendChild(trailerArea)
-}
+  const trailerKey = trailers.results[0].key;
+  const trailerDiv = document.getElementById("trailer");
+  const trailerArea = document.createElement('div');
+  trailerArea.className = "trailer";
+  trailerArea.innerHTML = `<iframe src="https://www.youtube.com/embed/${trailerKey}" allowfullscreen ></iframe>`;
+  trailerDiv.appendChild(trailerArea);
+};
 
 //this function provides to get the information about the chosen actor
 const displaySingleActorPage = (actor, actorJson) => {
@@ -361,14 +362,14 @@ htmlcssArrow.onclick = function () {
 let jsArrow = document.querySelector(".js-arrow");
 jsArrow.onclick = function () {
   navLinks.classList.toggle("show3");
-
- }
+ };
+ 
  // home button functionality
  const homeBtn = document.getElementById('home-btn');
  homeBtn.addEventListener('click',e=>{
   window.location.reload()
   e.preventDefault()
- })
+ });
 
 
  document.addEventListener("DOMContentLoaded", autorun);
