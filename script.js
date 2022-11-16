@@ -94,6 +94,16 @@ const fetchTrailers = async(id) => {
 };
 
 
+//this is for fetching the movie credit for single actor
+const fetchActorsMovie = async (id) => {
+  const url = constructUrl(`person/${id}/movie_credits`);
+  const res = await fetch(url);
+  // console.log(res.json());
+  return res.json();
+
+};
+
+
 // Don't touch this function please. This function is to fetch one movie.
 const fetchMovie = async (movieId) => {
   const url = constructUrl(`movie/${movieId}`);
@@ -191,7 +201,9 @@ const renderActors = (staffs) => {
         const url = constructUrl(`person/${personId}`);
         const res = await fetch(url);
         const actorJson = await res.json();
-        displaySingleActorPage(actor, actorJson);
+        const actorsMovie = await fetchActorsMovie(personId);
+
+        displaySingleActorPage(actor, actorJson, actorsMovie);
       };
 
       fetchPerson(actor.id);
@@ -201,6 +213,8 @@ const renderActors = (staffs) => {
     actorList.appendChild(actorDiv);
   });
 };
+
+
 
 //this function provides to get 5 related films about the chosen film
 const renderSimilarFilms = (similarFilms) => {
@@ -269,8 +283,30 @@ const renderTrailer = (trailers) => {
   trailerDiv.appendChild(trailerArea);
 };
 
+
+//this function provides to get movies of chosen actor
+const renderActorsMovie = (actorsMovie) => {
+  const actorsMovieList = document.querySelector("#actorsMovie");
+  actorsMovie.cast.map((film) => {
+    const filmDiv = document.createElement("div");
+    filmDiv.className = "col";
+    const actorsMovieCard = document.createElement("div");
+    actorsMovieCard.className = "card";
+
+    actorsMovieCard.innerHTML = `
+        <img src="${BACKDROP_BASE_URL + film.poster_path}" alt="${film.title} poster" height="200">
+        <div class = "card-body">
+          <p class = "card-text">${film.original_title}</p>
+        </div>`;
+    ///actorDiv.addEventListener("click", () => {displaySingleActorPage();});
+    filmDiv.appendChild(actorsMovieCard);
+    actorsMovieList.appendChild(filmDiv);
+  });
+};
+
+
 //this function provides to get the information about the chosen actor
-const displaySingleActorPage = (actor, actorJson) => {
+const displaySingleActorPage = (actor, actorJson, actorsMovie) => {
   CONTAINER.innerHTML = `
       <div class="row">
           <div class="col-md-4">
@@ -292,10 +328,12 @@ const displaySingleActorPage = (actor, actorJson) => {
               <h3>Biography:</h3>
               <p id="actor-biography">${actorJson.biography ? actorJson.biography : "no info"}</p>
 
-              <div id="actor-filmography" class="row">
+              <div id="actorsMovie" class="row">
 
           </div>
       </div>`;
+  renderActorsMovie(actorsMovie);
+
 };
 
 
