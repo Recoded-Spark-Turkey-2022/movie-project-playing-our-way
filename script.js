@@ -46,7 +46,7 @@ const fetchMovies = async () => {
   return res.json();
 };
 
-
+// this function to fetch geners and show them in the navbar 
 const fetchGenres = async () => {
   const url = constructUrl(`genre/movie/list`);
   const res = await fetch(url);
