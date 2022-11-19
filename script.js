@@ -13,6 +13,21 @@ const CONTAINER = document.querySelector(".container");
 // TMD_BASE_URL /person/1083010 / similar?api-key=xxx & language=en-US
 //https://api.themoviedb.org/3/now-playing?api_key=542003918769df50083a13c415bbc602&language=en-US&page=1
 
+
+
+//enterance screen
+const enterancePage = () => {
+  document.getElementById("my-audio").play();
+  const enterBtn = document.getElementById('enter-btn')
+  enterBtn.addEventListener('click', () => {
+    autorun();
+    //getting the footer and navbar when clicked
+    document.getElementById('footer').style.display = 'block'
+    navEl.style.position = "relative"
+  })
+}
+
+
 // Don't touch this function please
 const autorun = async () => {
   const movies = await fetchMovies();
@@ -94,7 +109,7 @@ const fetchTrailers = async(id) => {
 };
 
 
-//this is for fetching the movie credit for single actor
+//this is for fetching the movie credit for single actor page
 const fetchActorsMovie = async (id) => {
   const url = constructUrl(`person/${id}/movie_credits`);
   const res = await fetch(url);
@@ -111,14 +126,18 @@ const fetchMovie = async (movieId) => {
   return res.json();
 };
 
+
+
+
 // You'll need to play with this function in order to add features and enhance the style.
+//provides to show all now playing movies in the home page
 const renderMovies = (movies) => {
   CONTAINER.innerHTML=''
   movies.map((movie) => {
     const movieDiv = document.createElement("div");
     movieDiv.className = "col-sm-3 d-flex align-items-stretch";
     movieDiv.innerHTML = `
-    <div class="card">
+    <div class="card movies-card">
         <img src="${BACKDROP_BASE_URL + movie.backdrop_path}" alt="${
       movie.title
     } poster">
@@ -132,6 +151,7 @@ const renderMovies = (movies) => {
 };
 
 // You'll need to play with this function in order to add features and enhance the style.
+//provides to show single movie page with movie details
 const renderMovie = (movie, staffs, relatedFilms, trailers) => {
   CONTAINER.innerHTML = `
     <div class="row">
@@ -194,7 +214,7 @@ const renderActors = (staffs) => {
     actorCard.innerHTML = `
     <img src="${BACKDROP_BASE_URL + actor.profile_path}" alt="${actor.name} poster" height="200">
     <div class = "card-body">
-          <p class = "card-text">${actor.name}</p>
+          <p class = "card-text" id="single-movie-text">${actor.name}</p>
         </div>`;
     actorCard.addEventListener("click", () => {
       const fetchPerson = async (personId) => {
@@ -228,7 +248,7 @@ const renderSimilarFilms = (similarFilms) => {
     similarFilmCard.innerHTML = `
         <img src="${BACKDROP_BASE_URL + film.poster_path}" alt="${film.title} poster" height="200">
         <div class = "card-body">
-          <p class = "card-text">${film.original_title}</p>
+          <p class = "card-text" id="single-movie-text" >${film.original_title}</p>
         </div>`;
     ///actorDiv.addEventListener("click", () => {displaySingleActorPage();});
     filmDiv.appendChild(similarFilmCard);
@@ -266,7 +286,7 @@ const renderProductionCompanies = (companies) => {
       company.name
     } poster" width="100" height = "100%">
     <div class = "card-body">
-          <p class = "card-text">${company.name}</p>
+          <p class = "card-text" id="single-movie-text">${company.name}</p>
         </div>`;
 
     companyDiv.appendChild(companyCard);
@@ -294,9 +314,9 @@ const renderActorsMovie = (actorsMovie) => {
     actorsMovieCard.className = "card";
 
     actorsMovieCard.innerHTML = `
-        <img src="${BACKDROP_BASE_URL + film.poster_path}" alt="${film.title} poster" height="200">
+        <img src="${BACKDROP_BASE_URL + film.poster_path}" alt="${film.title} poster" height="200" id="single-movie-text">
         <div class = "card-body">
-          <p class = "card-text">${film.original_title}</p>
+          <p class = "card-text" id="single-movie-text">${film.original_title}</p>
         </div>`;
     ///actorDiv.addEventListener("click", () => {displaySingleActorPage();});
     filmDiv.appendChild(actorsMovieCard);
@@ -309,28 +329,27 @@ const renderActorsMovie = (actorsMovie) => {
 const displaySingleActorPage = (actor, actorJson, actorsMovie) => {
   CONTAINER.innerHTML = `
       <div class="row">
-          <div class="col-md-4">
+        <div class="col-md-4 left-text">
                
-               <img src="${BACKDROP_BASE_URL + actor.profile_path}" alt="${actor.name} poster" height="200">
+          <img src="${BACKDROP_BASE_URL + actor.profile_path}" alt="${actor.name} poster" height="200" id="actor-image">
+          <p id="actor-birthday"><b>Birthday:</b> ${actorJson.birthday ? actorJson.birthday : "no info"}</p>
+          <p id="actor-place-of-birth"><b>Place of Birth:</b> ${actorJson.place_of_birth ? actorJson.place_of_birth : "no info"}</p>
+          <p id="actor-deathday"><b>Date of Death:</b> ${actorJson.deathday ? actorJson.deathday : "alive"}</p>
+          <p><strong><bdi>Gender</bdi></strong><br> ${actorJson.gender == 2 ? "Male" : "Female"}</p>
+          <p id="actor-known-for"><b>Known for:</b> ${actorJson.known_for_department ? actorJson.known_for_department : "no info"}</p>
+          <p id="actor-popularity"><b>Popularity:</b> ${actorJson.popularity ? actorJson.popularity : "no info"}</p>
+ 
+        </div>
 
-          </div>
+        <div class="col-md-8 biography-container">
 
-          <div class="col-md-8">
+          <h2 id="actor-name">${actorJson.name}</h2>
+             
+          <h3>Biography:</h3>
+          <p class="left-text" id="actor-biography">${actorJson.biography ? actorJson.biography : "no info"}</p>
+          <div id="actorsMovie" class="row"></div>
 
-              <h2 id="actor-name">${actorJson.name}</h2>
-              <p id="actor-birthday"><b>Birthday:</b> ${actorJson.birthday ? actorJson.birthday : "no info"}</p>
-              <p id="actor-place-of-birth"><b>Place of Birth:</b> ${actorJson.place_of_birth ? actorJson.place_of_birth : "no info"}</p>
-              <p id="actor-deathday"><b>Date of Death:</b> ${actorJson.deathday ? actorJson.deathday : "alive"}</p>
-              <p><strong><bdi>Gender</bdi></strong><br> ${actorJson.gender == 2 ? "Male" : "Female"}</p>
-              <p id="actor-known-for"><b>Known for:</b> ${actorJson.known_for_department ? actorJson.known_for_department : "no info"}</p>
-              <p id="actor-popularity"><b>Popularity:</b> ${actorJson.popularity ? actorJson.popularity : "no info"}</p>
-
-              <h3>Biography:</h3>
-              <p id="actor-biography">${actorJson.biography ? actorJson.biography : "no info"}</p>
-
-              <div id="actorsMovie" class="row">
-
-          </div>
+        </div>
       </div>`;
   renderActorsMovie(actorsMovie);
 
@@ -341,14 +360,14 @@ const displaySingleActorPage = (actor, actorJson, actorsMovie) => {
 const navEl = document.createElement("nav");
 navEl.innerHTML = `<div class="navbar">
 <i class='bx bx-menu'></i>
-<div class="logo"><a href="#">MOVIES</a></div>
+
+<div class="logo"><img src="./images/logo.png" alt="logo" id="logo"/></div>
 <div class="nav-links">
   <div class="sidebar-logo">
     <span class="logo-name">CodingLab</span>
     <i class='bx bx-x' ></i>
   </div>
   <ul class="links">
-    <li><a href="#" id='home-btn'>HOME</a></li>
     <li>
       <a href="#" id='genres'>GENRES</a>
       <i class='bx bxs-chevron-down htmlcss-arrow arrow  '></i>
@@ -377,6 +396,9 @@ navEl.innerHTML = `<div class="navbar">
   </div>
 </div>
 </div>`;
+
+
+
 document.querySelector("body").prepend(navEl);
 // search-box open close js code
 let navbar = document.querySelector(".navbar");
@@ -414,11 +436,12 @@ jsArrow.onclick = function () {
  };
  
  // home button functionality
- const homeBtn = document.getElementById('home-btn');
- homeBtn.addEventListener('click',e=>{
-  window.location.reload()
+ const logoBtn = document.getElementById('logo')
+logoBtn.addEventListener('click', (e) => {
+  autorun()
   e.preventDefault()
- });
+})
+
 
 //create all actors page when clicked the actor button in the navbar
 const allActorsBtn = document.getElementById("all-actors")
@@ -442,7 +465,7 @@ const allActors = async () => {
     actorCard.innerHTML = `
     <img src="${BACKDROP_BASE_URL + mainActor.profile_path}" alt="${mainActor.name} poster" height="200">
     <div class = "card-body">
-          <p class = "card-text">${mainActor.name}</p>
+          <p class = "card-text" id="single-movie-text">${mainActor.name}</p>
         </div>`;
 
     actorDiv.appendChild(actorCard);
@@ -464,4 +487,4 @@ const allActors = async () => {
 
 
 
- document.addEventListener("DOMContentLoaded", autorun);
+ document.addEventListener("DOMContentLoaded", enterancePage);
