@@ -1,23 +1,84 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap');
+
 *{
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
+#myVideo {
+  width: 100vw;
+  height: 100vh;
+  object-fit: cover;
+  position: fixed;
+  top: 0;
+  left: 0;
+}
+.text-box h2{
+  font-family: 'Roboto', sans-serif;
+  position: absolute;
+  top: 250px;
+  left: 0;
+  /* background: #000000; */
+  height: 100%;
+  width: 100%;
+  color: #05257e;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 60px;
+  font-weight: 900;
+  mix-blend-mode: multiply;
+}
+
+.left-text{
+  text-align: left;
+}
+
+/* .biography-container{
+  margin-left: 1em;
+} */
+
 body{
     min-height: 100vh;
+     background-color: #010001; 
   }
+
+  #logo{
+    margin: 0;
+    padding: 0;
+    top: 0;
+    left: 0;
+    height: 100%;
+    height: 70px;
+    width: 100%;
+  }
+  #logo:hover{
+    filter: brightness(130%);
+  }
+  .video-div container {
+    z-index: -100;
+    width:100%;
+    height:75%;
+    overflow:hidden;
+    position:absolute;
+    top:0;
+    left:0;
+    }
   nav{
-    position: relative;
+    /* position: fixed; */
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
     height: 70px;
-    background: #3E8DA8;
+    /* background: #2e0d47; */
+    background-image: linear-gradient( #245399ab, black);
     box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
     z-index: 99;
+    font-family: 'Roboto', sans-serif;
   }
+ 
   nav .navbar{
     height: 100%;
     max-width: 1250px;
@@ -59,7 +120,7 @@ body{
     color: #fff;
     font-size: 15px;
     font-weight: 500;
-    
+    font-family: 'Roboto', sans-serif;
   }
   .links li:hover .htmlcss-arrow,
   .links li:hover .js-arrow{
@@ -81,7 +142,7 @@ body{
     left: 0;
     line-height: 40px;
     transform: translateY(-3em);
-    background: #3E8DA8;
+    background: #0D1D36;
     box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
     border-radius: 0 0 4px 4px;
     z-index: -1;
@@ -99,11 +160,13 @@ body{
   .navbar .links li .sub-menu li{
     padding: 0 22px;
     border-bottom: 1px solid rgba(255,255,255,0.1);
+    font-family: 'Roboto', sans-serif;
   }
   .navbar .links li .sub-menu a{
     color: #fff;
     font-size: 15px;
     font-weight: 500;
+    font-family: 'Roboto', sans-serif;
   }
   .navbar .search-box{
     position: relative;
@@ -128,7 +191,7 @@ body{
     top: 80px;
     height: 60px;
     width: 300px;
-    background: #3E8DA8;
+    background: #0D1D36;
     border-radius: 6px;
     opacity: 0;
     pointer-events: none;
@@ -138,14 +201,14 @@ body{
     top: 65px;
     opacity: 1;
     pointer-events: auto;
-    background: #3E8DA8;
+    background: #0D1D36;
   }
   .search-box .input-box::before{
     content: '';
     position: absolute;
     height: 20px;
     width: 20px;
-    background: #3E8DA8;
+    background: #0D1D36;
     right: 10px;
     top: -6px;
     transform: rotate(45deg);
@@ -197,7 +260,7 @@ body{
       display: block;
       max-width: 270px;
       width: 100%;
-      background:  #3E8DA8;
+      background:  #0D1D36;
       line-height: 40px;
       padding: 20px;
       box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
@@ -269,6 +332,22 @@ body{
 #actors {
     margin: 24px 16px 0 0;
 } 
+
+#actor-image{
+  height: 30rem;
+}
+#actor-name{
+  margin-top: 1.5rem;
+}
+#single-movie-text{
+  color: #010001;
+}
+.movies-card{
+  color: #010001;
+  text-align: center;
+
+}
+
 #movie-backdrop {
   width: 100%;
 }
@@ -277,14 +356,22 @@ div.container {
   text-align: center;
   display: flex;
   flex-wrap: wrap;
+  font-family: 'Roboto', sans-serif;
+  color: rgb(255, 240, 240);
 }
 
 div.container img {
-  width: 100%;
-  height: 100%;
+ 
+  height: 15rem;
   object-fit: cover;
   object-position: center;
   border-radius: 4px;
+}
+
+div.container .card-body{
+  color: black, #245399ab;
+  font-family: 'Roboto', sans-serif;
+  font-size: 1em;
 }
 
 div.card {
@@ -318,26 +405,35 @@ iframe {
   border-radius: 3rem;
 }
 
-iframe:hover {
+/* iframe:hover {
   cursor: pointer;
   transform: scale(1.1);
-}
+} */
 /* Trailer */
 
 
 /* Footer */
 #footer {
-  background: #3E8DA8 !important;
-  position: relative;
+  display: none;
+  background-image: linear-gradient(black, #245399ab) !important;
+  /* background: #2e0d47!important; */
+  /* position: relative; */
+  width: 100%;
+    height: 100%;
+    height: 6rem;
   bottom: 0;
   top: 0;
-  width: 100%;
-  height: 15rem;
-  
+}
+.footer-order{
+  width: 1029px;
+  margin-top: 2em;
+  margin-left: 0.5em;
+  margin-right: 0.5em;
 }
 #footer h5{
   padding-bottom: 6px;
-  margin-bottom: 20px;
+  margin-bottom: 6px;
+  font-size: 1em;
   color: #e5e5e5;
 }
 #footer a {
@@ -346,7 +442,7 @@ iframe:hover {
   background-color: transparent;
   -webkit-text-decoration-skip: objects;
 }
-#footer ul.social li{
+/* #footer ul.social li{
 padding: 3px 0;
 }
 #footer ul.social li a i {
@@ -363,6 +459,12 @@ margin-top:-10px;
 #footer ul.social li a,
 #footer ul.quick-links li a{
 color:#ffffff;
+}
+#footer ul.social li{
+  display: inline;
+}
+#footer ul{
+  list-style: none;
 }
 #footer ul.social li a:hover{
 color:#eeeeee;
@@ -383,5 +485,5 @@ margin-right: 5px;
 }
 #footer ul.quick-links li:hover a i {
   font-weight: 700;
-}
+} */
 /* Footer */
