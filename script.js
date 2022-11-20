@@ -56,6 +56,7 @@ const movieDetails = async (movie) => {
 const fetchMovies = async () => {
   const url = constructUrl(`movie/now_playing`);
   const res = await fetch(url);
+  
   return res.json();
 };
 
@@ -142,13 +143,73 @@ const renderMovies = (movies) => {
       movie.title
     } poster">
 
-        <h3>${movie.title}</h3>`;
+        <h3>${movie.title}</h3>
+        
+        <div class="rating">
+          <span class="material-icons">Rating: ${movie.vote_average}</span>
+        </div>
+
+        <div class="genre-ids">
+          ${movie.genre_ids.map((genre) => {
+            return `<span class="badge badge-primary">${genre}</span>`;
+          })}
+        </div>
+
+        <div class="genre">
+          <span class="movie-genre">${movie.genre}</span>
+        </div>
+
+        <button class="btn btn-primary" onclick="movieDetails()">More Details</button>
+        
+      </div>
+      `;
+
+        // mouse over to show 
+    movieDiv.querySelector(".btn-primary").style.display = "none";
+    movieDiv.addEventListener("mouseover", () => {
+      movieDiv.querySelector(".btn-primary").style.display = "block";
+    });
+    movieDiv.addEventListener("mouseout", () => {
+      movieDiv.querySelector(".btn-primary").style.display = "none";
+    });
+    movieDiv.querySelector(".btn-primary").addEventListener("click", () => {
+      movieDetails(movie);
+    }); 
+
+    movieDiv.querySelector(".genre-ids").style.display = "none";
+    movieDiv.addEventListener("mouseover", () => {
+      movieDiv.querySelector(".genre-ids").style.display = "block";
+    });
+    movieDiv.addEventListener("mouseout", () => {
+      movieDiv.querySelector(".genre-ids").style.display = "none";
+    });
+
+    movieDiv.querySelector(".rating").style.display = "none";
+    movieDiv.addEventListener("mouseover", () => {
+      movieDiv.querySelector(".rating").style.display = "block";
+    });
+    movieDiv.addEventListener("mouseout", () => {
+      movieDiv.querySelector(".rating").style.display = "none";
+    });
+
+    movieDiv.querySelector(".genre").style.display = "none";
+    movieDiv.addEventListener("mouseover", () => {
+      movieDiv.querySelector(".genre").style.display = "block";
+    });
+    movieDiv.addEventListener("mouseout", () => {
+      movieDiv.querySelector(".genre").style.display = "none";
+    });
+
+
     movieDiv.addEventListener("click", () => {
       movieDetails(movie);
     });
     CONTAINER.appendChild(movieDiv);
   });
+  
 };
+
+
 
 // You'll need to play with this function in order to add features and enhance the style.
 //provides to show single movie page with movie details
