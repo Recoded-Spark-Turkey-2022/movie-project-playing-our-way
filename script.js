@@ -159,7 +159,7 @@ const renderMovies = (movies) => {
           <span class="movie-genre">${movie.genre}</span>
         </div>
 
-        <button class="btn btn-primary" onclick="movieDetails()">More Details</button>
+        <button class="btn btn-primary" id="button-hover-color" onclick="movieDetails()">More Details</button>
         
       </div>
       `;

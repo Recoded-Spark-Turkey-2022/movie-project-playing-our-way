@@ -39,6 +39,10 @@
   margin-left: 1em;
 } */
 
+#button-hover-color{
+  background-image: linear-gradient(to right, black 0%, #245399ab , black  100%)
+}
+
 body{
     min-height: 100vh;
      background-color: #010001; 
