@@ -149,17 +149,8 @@ const renderMovies = (movies) => {
           <span class="material-icons">Rating: ${movie.vote_average}</span>
         </div>
 
-        <div class="genre-ids">
-          ${movie.genre_ids.map((genre) => {
-            return `<span class="badge badge-primary">${genre}</span>`;
-          })}
-        </div>
-
-        <div class="genre">
-          <span class="movie-genre">${movie.genre}</span>
-        </div>
-
         <button class="btn btn-primary" id="homepage-more-detail-btn" onclick="movieDetails()">More Details</button>
+
         
       </div>
       `;
@@ -174,14 +165,6 @@ const renderMovies = (movies) => {
     });
     movieDiv.querySelector(".btn-primary").addEventListener("click", () => {
       movieDetails(movie);
-    }); 
-
-    movieDiv.querySelector(".genre-ids").style.display = "none";
-    movieDiv.addEventListener("mouseover", () => {
-      movieDiv.querySelector(".genre-ids").style.display = "block";
-    });
-    movieDiv.addEventListener("mouseout", () => {
-      movieDiv.querySelector(".genre-ids").style.display = "none";
     });
 
     movieDiv.querySelector(".rating").style.display = "none";
@@ -191,15 +174,6 @@ const renderMovies = (movies) => {
     movieDiv.addEventListener("mouseout", () => {
       movieDiv.querySelector(".rating").style.display = "none";
     });
-
-    movieDiv.querySelector(".genre").style.display = "none";
-    movieDiv.addEventListener("mouseover", () => {
-      movieDiv.querySelector(".genre").style.display = "block";
-    });
-    movieDiv.addEventListener("mouseout", () => {
-      movieDiv.querySelector(".genre").style.display = "none";
-    });
-
 
     movieDiv.addEventListener("click", () => {
       movieDetails(movie);
