@@ -301,6 +301,9 @@ const renderActorsMovie = (actorsMovie) => {
     ///actorDiv.addEventListener("click", () => {displaySingleActorPage();});
     filmDiv.appendChild(actorsMovieCard);
     actorsMovieList.appendChild(filmDiv);
+    filmDiv.addEventListener('click', () => {
+      movieDetails(film);
+    });
   });
 };
 
