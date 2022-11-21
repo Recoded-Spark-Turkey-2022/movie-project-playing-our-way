@@ -230,7 +230,7 @@ const renderMovie = (movie, staffs, relatedFilms, trailers) => {
     </div>`;
 
   renderActors(staffs);
-  renderSimilarFilms(relatedFilms);
+  renderSimilarFilms(relatedFilms, movieDetails);
   findDirector(staffs.crew);
   findGenres(movie.genres);
   renderProductionCompanies(movie.production_companies);
@@ -272,7 +272,7 @@ const renderActors = (staffs) => {
 
 
 //this function provides to get 5 related films about the chosen film
-const renderSimilarFilms = (similarFilms) => {
+const renderSimilarFilms = (similarFilms, movieDetails) => {
   const relatedFilmsList = document.querySelector("#similarFilms");
   similarFilms.results.slice(0, 5).map((film) => {
     const filmDiv = document.createElement("div");
@@ -288,6 +288,8 @@ const renderSimilarFilms = (similarFilms) => {
     ///actorDiv.addEventListener("click", () => {displaySingleActorPage();});
     filmDiv.appendChild(similarFilmCard);
     relatedFilmsList.appendChild(filmDiv);
+    filmDiv.addEventListener('click', () => {
+      movieDetails(film)})
   });
 };
 
@@ -356,6 +358,9 @@ const renderActorsMovie = (actorsMovie) => {
     ///actorDiv.addEventListener("click", () => {displaySingleActorPage();});
     filmDiv.appendChild(actorsMovieCard);
     actorsMovieList.appendChild(filmDiv);
+    filmDiv.addEventListener('click', () => {
+      movieDetails(film);
+    });
   });
 };
 
