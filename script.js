@@ -149,8 +149,8 @@ const renderMovies = (movies) => {
           <span class="material-icons">Rating: ${movie.vote_average}</span>
         </div>
 
-        <button class="btn btn-primary" id="homepage-more-detail-btn" onclick="movieDetails()">More Details</button>
 
+        <button class="btn btn-primary" id="homepage-more-detail-btn" onclick="movieDetails()">More Details</button>
         
       </div>
       `;
