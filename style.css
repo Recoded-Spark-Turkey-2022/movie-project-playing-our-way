@@ -39,6 +39,10 @@
   margin-left: 1em;
 } */
 
+#homepage-more-detail-btn{
+  background-image: linear-gradient(to right, black 0%, #245399ab  51%, black  100%)
+}
+
 body{
     min-height: 100vh;
      background-color: #010001; 
