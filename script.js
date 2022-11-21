@@ -149,21 +149,8 @@ const renderMovies = (movies) => {
           <span class="material-icons">Rating: ${movie.vote_average}</span>
         </div>
 
-<<<<<<< Updated upstream
-        <div class="genre-ids">
-          ${movie.genre_ids.map((genre) => {
-            return `<span class="badge badge-primary">${genre}</span>`;
-          })}
-        </div>
 
-        <div class="genre">
-          <span class="movie-genre">${movie.genre}</span>
-        </div>
-
-        <button class="btn btn-primary" onclick="movieDetails()">More Details</button>
-=======
         <button class="btn btn-primary" id="homepage-more-detail-btn" onclick="movieDetails()">More Details</button>
->>>>>>> Stashed changes
         
       </div>
       `;
